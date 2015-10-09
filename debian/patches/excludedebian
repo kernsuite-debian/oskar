@@ -1,0 +1,16 @@
+Description: don't install debian temp files
+
+--- oskar-2.6.1.orig/CMakeLists.txt
++++ oskar-2.6.1/CMakeLists.txt
+@@ -152,7 +152,11 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}
+     PATTERN src  EXCLUDE
+     PATTERN test EXCLUDE
+     PATTERN extern EXCLUDE
+-    PATTERN .svn EXCLUDE)
++    PATTERN .svn EXCLUDE
++    PATTERN debian EXCLUDE
++    PATTERN "obj-*" EXCLUDE
++)
++
+ install(FILES ${PROJECT_BINARY_DIR}/oskar_version.h
+     DESTINATION ${OSKAR_INCLUDE_INSTALL_DIR})
