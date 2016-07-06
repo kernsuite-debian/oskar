@@ -3,7 +3,7 @@ Section: science
 Priority: extra
 Maintainer: Gijs Molenaar <gijs@pythonic.nl>
 Build-Depends: debhelper (>= 8.0.0), cmake, libblas-dev, liblapack-dev,
- libqt4-dev, libcasacore2-dev, libthrust-dev, libccfits-dev, libgsl0-dev,
+ libqt4-dev, casacore-dev, libthrust-dev, libccfits-dev, libgsl0-dev,
  libatlas-base-dev, nvidia-cuda-toolkit
 Standards-Version: 3.9.2
 Homepage: http://www.oerc.ox.ac.uk/~ska/oskar2/
