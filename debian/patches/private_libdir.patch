@@ -1,0 +1,24 @@
+Author: Ole Streicher <olebole@debian.org>
+Description: Put the shared libraries into a package specific subdir
+--- a/utility/binary/CMakeLists.txt
++++ b/utility/binary/CMakeLists.txt
+@@ -50,7 +50,7 @@
+ 
+     #! Set install locations for standalone mode.
+     if (NOT OSKAR_LIB_INSTALL_DIR)
+-        set(OSKAR_LIB_INSTALL_DIR "lib")
++        set(OSKAR_LIB_INSTALL_DIR "lib/oskar")
+     endif()
+     if (NOT OSKAR_INCLUDE_INSTALL_DIR)
+         set(OSKAR_INCLUDE_INSTALL_DIR "include/oskar_binary")
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -26,7 +26,7 @@
+ 
+ # === Setup install directory paths
+ if (NOT OSKAR_LIB_INSTALL_DIR)
+-    set(OSKAR_LIB_INSTALL_DIR "lib")
++    set(OSKAR_LIB_INSTALL_DIR "lib/oskar")
+ endif()
+ if (NOT OSKAR_INCLUDE_INSTALL_DIR)
+     set(OSKAR_INCLUDE_INSTALL_DIR "include/oskar")

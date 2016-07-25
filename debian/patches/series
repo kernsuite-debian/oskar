@@ -1,2 +1,3 @@
 excludedebian
+private_libdir.patch
 system_cfitsio.patch
