@@ -1,0 +1,20 @@
+Author: Ole Streicher <olebole@debian.org>
+Description: Use cfitsio provided by the system
+ Don't use a private copy (Policy 4.13)
+--- a/cmake/oskar_compiler_options.cmake
++++ b/cmake/oskar_compiler_options.cmake
+@@ -33,7 +33,6 @@
+     ${PROJECT_SOURCE_DIR}/extern
+     ${PROJECT_SOURCE_DIR}/extern/gtest-1.7.0/include
+     ${PROJECT_SOURCE_DIR}/extern/rapidxml-1.13
+-    ${PROJECT_SOURCE_DIR}/extern/cfitsio-3.37
+     ${PROJECT_SOURCE_DIR}/extern/Random123
+     ${PROJECT_SOURCE_DIR}/extern/Random123/features
+     ${PROJECT_SOURCE_DIR}/imaging
+--- a/extern/CMakeLists.txt
++++ b/extern/CMakeLists.txt
+@@ -1,4 +1,3 @@
+ # src/extern/CMakeLists.txt
+ 
+ add_subdirectory(gtest-1.7.0)
+-add_subdirectory(cfitsio-3.37)
