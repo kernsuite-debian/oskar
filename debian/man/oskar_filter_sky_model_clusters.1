@@ -1,0 +1,36 @@
+.TH "OSKAR_FILTER_SKY_MODEL_CLUSTERS" "1" "August 2016" "oskar"
+.SH NAME
+oskar_filter_sky_model_clusters \- Removes sources in a sky model
+.SH "SYNOPSIS"
+.PP
+\fBoskar_filter_sky_model_clusters\fR [OPTIONS] \fImodel\fR [\fIfilter\fR]
+.SH DESCRIPTION
+Removes overlapping sources in a sky model by finding those which
+overlap, calculating the peak flux from each cluster, and filtering on
+the result.
+.SH OPTIONS
+.TP
+\fB\-s\fR, \fB\-\-sigma ARG\fR
+Multiple of Gaussian sigma to check for overlap (default = 5)
+.TP
+\fB\-t\fR, \fB\-\-threshold ARG\fR
+Threshold flux, in Jy or Jy/beam (default = 15)
+.TP
+\fB\-i\fR, \fB\-\-use\-integrated\-flux \fR
+Use integrated flux
+.TP
+\fB\-\-help\fR
+Display usage instructions and exit.
+.TP
+\fB\-\-version\fR
+Display the program name/version banner and exit.
+.TP
+\fImodel\fR
+Sky model to filter (in Jy; deconvolved size)>
+.TP
+\fIfilter\fR
+sky model to use as filter (in Jy/beam; fitted size)
+.SH COPYRIGHT
+OSKAR (version 2.6.1)
+Copyright \(co 2014, The University of Oxford.
+This program is free and without warranty.

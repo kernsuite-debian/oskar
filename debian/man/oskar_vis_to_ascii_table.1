@@ -1,0 +1,47 @@
+.TH "OSKAR_VIS_TO_ASCII_TABLE" "1" "August 2016" "oskar"
+.SH NAME
+oskar_vis_to_ascii_table \- OSKAR visibility file to ASCII table
+.SH "SYNOPSIS"
+.PP
+\fBoskar_vis_to_ascii_table\fR [OPTIONS] <OSKAR visibility file> [output file name]
+.SH DESCRIPTION
+Converts an OSKAR visibility binary file to an ASCII table format with
+the following columns: [1] index, [2] baseline-uu, [3] baseline-vv, [4]
+baseline-ww [5] Real, [6] Imag. The table is written out in baseline-time
+order where baseline is the fastest varying dimension
+.SH OPTIONS
+.TP
+\fB\-c\fR, \fB\-\-channel\fR \fIARG\fR
+Channel index to write to file. (default = 0)
+.TP
+\fB\-p\fR, \fB\-\-polarisation\fR \fIARG\fR
+Polarisation ID to write to file. (default = 0)
+(0=I, 1=Q, 2=U, 3=V, 4=XX, 5=XY, 6=YX, 7=YY)
+.TP
+\fB\-t\fR, \fB\-\-time\fR \fIARG\fR
+Time index to write to file. (default = all)
+.TP
+\fB\-w\fR, \fB\-\-baseline_wavelengths\fR
+Output baseline coordinates in wavelengths. (default = metres)
+.TP
+\fB\-h\fR
+Write a summary header in the ASCII table. 
+.TP
+\fB\-v\fR
+Verbose mode.
+.TP
+\fB\-\-csv\fR
+Write in CSV format
+.TP
+\fB\-s\fR, \fB\-\-stdout\fR
+Write output table to standard output instead of to file.
+.TP
+\fB\-\-help\fR
+Display usage instructions and exit.
+.TP
+\fB\-\-version\fR
+Display the program name/version banner and exit.
+.SH COPYRIGHT
+OSKAR (version 2.6.1)
+Copyright \(co 2014, The University of Oxford.
+This program is free and without warranty.

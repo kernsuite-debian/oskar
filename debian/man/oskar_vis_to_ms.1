@@ -1,0 +1,27 @@
+.TH "OSKAR_VIS_TO_MS" "1" "August 2016" "oskar"
+.SH NAME
+oskar_vis_to_ms \- OSKAR visibility files to Measurement Set format
+.SH "SYNOPSIS"
+.PP
+\fBoskar_vis_to_ms\fR [OPTIONS] <OSKAR visibility files...>
+.SH DESCRIPTION
+Converts one or more OSKAR visibility binary files to Measurement Set
+format (http://casa.nrao.edu/Memos/229.html). If not specified, the name
+of the Measurement Set will be 'out.ms'.
+.SH OPTIONS
+.TP
+\fB\-o\fR, \fB\-\-output\fR \fIARG\fR
+Output Measurement Set name (default = out.ms)
+.TP
+\fB\-p\fR, \fB\-\-force_polarised\fR
+Force polarised MS format 
+.TP
+\fB\-\-help\fR
+Display usage instructions and exit.
+.TP
+\fB\-\-version\fR
+Display the program name/version banner and exit.
+.SH COPYRIGHT
+OSKAR (version 2.6.1)
+Copyright \(co 2014, The University of Oxford.
+This program is free and without warranty.

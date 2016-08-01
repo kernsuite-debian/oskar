@@ -1,0 +1,39 @@
+.TH "OSKAR_FITS_IMAGE_TO_SKY_MODEL" "1" "August 2016" "oskar"
+.SH NAME
+oskar_fits_image_to_sky_model \- Convert FITS to OSKAR sky
+.SH "SYNOPSIS"
+.PP
+\fBoskar_fits_image_to_sky_model\fR [OPTIONS] <FITS file> <sky model file>
+.SH DESCRIPTION
+Converts a FITS image to an OSKAR sky model. A number of options are
+provided to control how much of the image is used to make the sky model.
+.SH OPTIONS
+.TP
+\fB\-s\fR \fIARG\fR
+Spectral index. This is the spectral index that will be given to
+each pixel in the output sky model. (default = 0.0)
+.TP
+\fB\-f\fR \fIARG\fR
+Minimum allowed fraction of image peak. Pixel values below this
+fraction will be ignored. (default = 0.0)
+.TP
+\fB\-d\fR \fIARG\fR
+Downsample factor. This is an integer that must be >= 1, and is
+the factor by which the image is downsampled before saving the
+regrouped pixel values in the sky model. For example, a downsample
+factor of 2 would scale the image down by 50% in both dimensions
+before the format conversion. (default = 1)
+.TP
+\fB\-n\fR \fIARG\fR
+Noise floor in Jy/PIXEL. Pixels below this value will be ignored.
+(default = 0.0)
+.TP
+\fB\-\-help\fR
+Display usage instructions and exit.
+.TP
+\fB\-\-version\fR
+Display the program name/version banner and exit.
+.SH COPYRIGHT
+OSKAR (version 2.6.1)
+Copyright \(co 2014, The University of Oxford.
+This program is free and without warranty.
