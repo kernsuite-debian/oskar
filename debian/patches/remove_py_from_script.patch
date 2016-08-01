@@ -1,0 +1,26 @@
+Author: Ole Streicher <olebole@debian.org>
+Description: Remove the .py suffix from the installed script
+ Executables shall not have a suffix determining the script language.
+--- a/apps/CMakeLists.txt
++++ b/apps/CMakeLists.txt
+@@ -106,18 +106,9 @@
+ # Install python scripts to the installation binary directory
+ include(oskar_copy_files)
+ copy_files(${CMAKE_CURRENT_SOURCE_DIR} *.py ${CMAKE_CURRENT_BINARY_DIR})
+-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
++install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/oskar_convert_cst_to_scalar.py"
+     DESTINATION "${OSKAR_BIN_INSTALL_DIR}"
+-    FILES_MATCHING PATTERN "*.py"
+-    PERMISSIONS
+-        OWNER_READ OWNER_WRITE OWNER_EXECUTE
+-        GROUP_READ GROUP_EXECUTE
+-        WORLD_READ WORLD_EXECUTE
+-    PATTERN "CMakeFiles" EXCLUDE
+-    PATTERN "log" EXCLUDE
+-    PATTERN "gui" EXCLUDE
+-    PATTERN "lib" EXCLUDE
+-    PATTERN "test" EXCLUDE
++    RENAME "oskar_convert_cst_to_scalar"
+ )
+ 
+ #if (CUDA_FOUND AND PNG_FOUND)
