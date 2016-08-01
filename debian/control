@@ -24,7 +24,7 @@ Vcs-Browser: https://anonscm.debian.org/cgit/debian-astro/packages/oskar.git
 Package: oskar
 Architecture: any
 Depends: python, ${misc:Depends}, ${shlibs:Depends}
-Description: The Open Square Kilometre Array Radio Telescope Simulator
+Description: Simulator for the Open Square Kilometre Array Radio Telescope
  The OSKAR package consists of a number of open source libraries and
  applications for the simulation of astronomical radio interferometers. OSKAR
  has been designed primarily to produce simulated data from large aperture
