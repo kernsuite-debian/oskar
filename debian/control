@@ -1,7 +1,9 @@
 Source: oskar
 Section: science
 Priority: optional
-Maintainer: Gijs Molenaar <gijs@pythonic.nl>
+Maintainer: Debian Astro Team <debian-astro-maintainers@lists.alioth.debian.org>
+Uploaders: Gijs Molenaar <gijs@pythonic.nl>,
+ Ole Streicher <olebole@debian.org>
 Build-Depends: casacore-dev,
                cmake,
                debhelper (>= 9),
