@@ -1,0 +1,20 @@
+Author: Ole Streicher <olebole@debian.org>
+Description: Propagate CFLAGS and CXXFLAGS
+ These are needed for hardening, debugging options etc.
+--- a/cmake/oskar_compiler_options.cmake
++++ b/cmake/oskar_compiler_options.cmake
+@@ -102,12 +102,12 @@
+     # allow for a number of non C89 compiler extensions such as sinf, powf,
+     # strtok_r as well as gnu inline mode which is needed for CUDA Thurst with
+     # some compilers.
+-    set(CMAKE_C_FLAGS "-fPIC -std=gnu89")
++    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=gnu89")
+     set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+     set(CMAKE_C_FLAGS_DEBUG "-O0 -g -Wall")
+     set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g -Wall")
+     set(CMAKE_C_FLAGS_MINSIZEREL "-O1 -DNDEBUG -DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+-    set(CMAKE_CXX_FLAGS "-fPIC")
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -Wall")
+     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wall")
