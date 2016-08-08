@@ -1,5 +1,5 @@
 Source: oskar
-Section: science
+Section: contrib/science
 Priority: optional
 Maintainer: Debian Astro Team <debian-astro-maintainers@lists.alioth.debian.org>
 Uploaders: Gijs Molenaar <gijs@pythonic.nl>,
