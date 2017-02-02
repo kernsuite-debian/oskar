@@ -1,3 +1,9 @@
+oskar (2.6.1-1kern2) xenial; urgency=low
+
+  * trigger rebuild
+
+ -- Gijs Molenaar (launchpad ppa build key) <gijs@pythonic.nl>  Thu, 02 Feb 2017 11:48:21 +0000
+
 oskar (2.6.1-1) UNRELEASED; urgency=low
 
   * Initial release. Closes: #831026
