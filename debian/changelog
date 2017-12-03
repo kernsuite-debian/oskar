@@ -1,3 +1,9 @@
+oskar (2.6.1-1kern4) xenial; urgency=medium
+
+  * build with new signature
+
+ -- KERN packaging <packaging@kernsuite.info>  Sun, 03 Dec 2017 16:30:15 +0200
+
 oskar (2.6.1-1kern3) xenial; urgency=medium
 
   * build for all cuda arch
