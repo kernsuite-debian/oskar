@@ -12,7 +12,6 @@
 #   0. Global variables                                                       #
 #       - current_oskar_version                                               #
 #       - oskar_app_path                                                      #
-#       - oskar_url                                                           #
 #   1. General utility functions                                              #
 #       - console_log                                                         #
 #       - set_value                                                           #
@@ -20,8 +19,6 @@
 #   2. Functions for working with OSKAR example data.                         #
 #       - example_data_script_usage                                           #
 #       - get_example_data_version                                            #
-#       - download_example_data                                               #
-#       - set_oskar_binaries                                                  #
 #   3. Functions for working with OSKAR.                                      #
 #       - set_setting                                                         #
 #       - get_setting                                                         #
@@ -42,7 +39,7 @@
 ###############################################################################
 export current_oskar_version="@OSKAR_VERSION_STR@"
 oskar_app_path="@PROJECT_BINARY_DIR@/apps"
-oskar_url="http://oerc.ox.ac.uk/~ska/oskar"
+example_data_dir="@PROJECT_BINARY_DIR@/apps/test/data"
 
 ###############################################################################
 #                                                                             #
@@ -118,10 +115,10 @@ function example_data_script_usage() {
 #   current OSKAR binary version.
 #
 # Usage:
-#   getExampleVersion [Array of command line arguments]
+#   get_example_data_version [Array of command line arguments]
 #
 # Example:
-#   getExampleVersion $@
+#   get_example_data_version $@
 #
 function get_example_data_version() {
     local default_example_version="@OSKAR_VERSION_MAJOR@.@OSKAR_VERSION_MINOR@"
@@ -133,54 +130,10 @@ function get_example_data_version() {
     if [ $# -eq 1 ]; then
         version=$1
     else
-        version=$default_example_version
+        version=${default_example_version}
     fi
 }
 
-# Description:
-#   Downloads the OSKAR example data for the specified version.
-#   Also sets the variables:
-#       $example_data_url : The URL to the example data being used.
-#       $example_data_dir : The directory of the example data downloaded
-#
-# Usage:
-#   downloadExampleData [version]
-#
-# Example:
-#   downloadExampleData $version
-#   downloadExampleData 2.5
-#
-function download_example_data() {
-    # Set variables to the example data path, file, and url
-    example_data_dir="OSKAR-${1}-Example-Data"
-    local file="${example_data_dir}.zip"
-    example_data_url="${oskar_url}/${1}/data/${file}"
-    # Download and unpack the example data, removing any existing data first.
-    if [ -f "$file" ]; then
-        rm -f "$file"
-    fi
-    if [ -d "$example_data_dir" ]; then
-        rm -rf "$example_data_dir"
-    fi
-    wget -q "$example_data_url"
-    if [ ! -f "$file" ]; then
-        echo "Error: Failed to download example data from:"
-        echo "  '$example_data_url'"
-        echo ""
-        echo "Please check the example data for OSKAR version '${version}' exists!"
-        example_data_script_usage
-        exit_ 1
-    fi
-    unzip -q "${file}"
-    if [ ! -d "$example_data_dir" ]; then
-        echo "ERROR: Failed to unpack example data. ${file}"
-        exit_ 1
-    fi
-    # Remove the zip file.
-    if [ -f "$file" ]; then
-        rm -f "$file"
-    fi
-}
 
 ###############################################################################
 #                                                                             #
@@ -190,77 +143,81 @@ function download_example_data() {
 
 # Description:
 #   Sets the specified setting into the specified *.ini file using the
-#   'oskar_set_setting' binary.
+#   application binary.
 #
 # Usage:
-#   set_setting [ini_file] [key] [value]
+#   set_setting [app] [ini_file] [key] [value]
 #
 # Example
-#   set_setting test.ini sky/oskar_sky_model/file sky.osm
+#   set_setting oskar_sim_interferometer test.ini sky/oskar_sky_model/file sky.osm
 #
 function set_setting() {
-    local bin=${oskar_app_path}/oskar_settings_set
-    if [ ! -x ${bin} ]; then
-        echo "ERROR: Unable to find required binary: $bin."
+    if [ ! $# -eq 4 ]; then
+        echo "ERROR: set_setting requires 4 input arguments got $#."
+        echo "usage: set_setting [app] [ini_file] [key] [value]"
         exit_ 1
+        return
     fi
-    if [ ! $# -eq 3 ]; then
-        echo "ERROR: set_setting requires 3 input arguments got $#."
-        echo "usage: set_setting [ini_file] [key] [value]"
+    if [ ! -x $1 ]; then
+        echo "ERROR: Unable to find required app: $1."
         exit_ 1
+        return
     fi
-    eval "$bin -q $1 $2 \"$3\""
+    if [ ! -x $2 ]; then
+        touch $2
+    fi
+    eval "$1 --set $2 $3 \"$4\""
 }
 
 # Description:
 #   Gets the specified setting into the specified *.ini file using the
-#   'oskar_get_setting' binary.
+#   application binary.
 #
 # Usage:
-#   get_setting [ini_file] [key]
+#   get_setting [app] [ini_file] [key]
 #
 # Example
-#   value=$(get_setting test.ini observation/num_time_steps)
+#   value=$(get_setting oskar_sim_interferometer test.ini observation/num_time_steps)
 #
 function get_setting() {
-    local bin=${oskar_app_path}/oskar_settings_get
-    if [ ! -x ${bin} ]; then
-        echo "ERROR: Unable to find required binary: $bin."
+    if [ ! $# -eq 3 ]; then
+        echo "ERROR: get_setting requires 3 input arguments got $#."
+        echo "usage: get_setting [app] [ini_file] [key]"
         exit_ 1
         return
     fi
-    if [ ! $# -eq 2 ]; then
-        echo "ERROR: get_setting requires 2 input arguments got $#."
-        echo "usage: get_setting [ini_file] [key]"
+    if [ ! -x $1 ]; then
+        echo "ERROR: Unable to find required app: $1."
         exit_ 1
         return
     fi
-    var=$($bin "$1" "$2")
+    var=$($1 --get "$2" "$3")
     echo "$var"
 }
 
 # Description:
-#   Removes / deletes the specified setting in the specified *.ini file using the
-#   'oskar_set_setting' binary.
+#   Removes the specified setting in the specified *.ini file using the
+#   application binary.
 #
 # Usage:
-#   del_setting [ini_file] [key]
+#   del_setting [app] [ini_file] [key]
 #
 # Example
-#   del_setting test.ini sky/oskar_sky_model/file
+#   del_setting oskar_sim_interferometer test.ini sky/oskar_sky_model/file
 #
 function del_setting() {
-    local bin=${oskar_app_path}/oskar_settings_set
-    if [ ! -x ${bin} ]; then
-        echo "ERROR: Unable to find required binary: $bin."
+    if [ ! $# -eq 3 ]; then
+        echo "ERROR: del_setting requires 3 input arguments got $#."
+        echo "usage: del_setting [app] [ini_file] [key]"
         exit_ 1
+        return
     fi
-    if [ ! $# -eq 2 ]; then
-        echo "ERROR: del_setting requires 2 input arguments got $#."
-        echo "usage: del_setting [ini_file] [key]"
+    if [ ! -x $1 ]; then
+        echo "ERROR: Unable to find required app: $1."
         exit_ 1
+        return
     fi
-    cmd="$bin -q $1 $2"
+    cmd="$1 --set $2 $3"
     ($cmd)
 }
 

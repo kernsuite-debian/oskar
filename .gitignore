@@ -1,0 +1,16 @@
+*.DS_Store
+*.pyc
+
+# Eclipse project files
+/.project
+/.cproject
+/.settings/
+
+# PyCharm project files
+/.idea/
+
+# Build directories
+/release/
+/debug/
+/build/
+
