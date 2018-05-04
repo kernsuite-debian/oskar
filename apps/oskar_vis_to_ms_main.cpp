@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, The University of Oxford
+ * Copyright (c) 2012-2017, The University of Oxford
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <apps/lib/oskar_vis_block_write_ms.h>
-#include <apps/lib/oskar_vis_header_write_ms.h>
-#include <apps/lib/oskar_OptionParser.h>
-#include <oskar_get_error_string.h>
-#include <oskar_log.h>
-#include <oskar_vis_header.h>
-#include <oskar_vis_block.h>
-#include <oskar_measurement_set.h>
-#include <oskar_version_string.h>
-#include <oskar_binary.h>
-#include <oskar_binary_read_mem.h>
+#include "apps/oskar_option_parser.h"
+#include "binary/oskar_binary.h"
+#include "log/oskar_log.h"
+#include "mem/oskar_binary_read_mem.h"
+#include "ms/oskar_measurement_set.h"
+#include "utility/oskar_get_error_string.h"
+#include "utility/oskar_version_string.h"
+#include "vis/oskar_vis_header.h"
+#include "vis/oskar_vis_block.h"
+
 #include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -49,27 +49,26 @@ int main(int argc, char** argv)
 {
     int error = 0;
 
-    oskar_OptionParser opt("oskar_vis_to_ms", oskar_version_string());
-    opt.setDescription("Converts one or more OSKAR visibility binary files to "
+    oskar::OptionParser opt("oskar_vis_to_ms", oskar_version_string());
+    opt.set_description("Converts one or more OSKAR visibility binary files to "
             "Measurement Set format (http://casa.nrao.edu/Memos/229.html).\n"
             "If not specified, the name of the Measurement Set will "
             "be 'out.ms'.");
-    opt.addRequired("OSKAR visibility files...");
-    opt.addFlag("-o", "Output Measurement Set name", 1, "out.ms",
+    opt.add_required("OSKAR visibility files...");
+    opt.add_flag("-o", "Output Measurement Set name", 1, "out.ms",
             false, "--output");
-    opt.addFlag("-p", "Force polarised MS format", false, "--force_polarised");
-    opt.addExample("oskar_vis_to_ms file1.vis file2.vis");
-    opt.addExample("oskar_vis_to_ms file1.vis file2.vis -o stitched.ms");
-    opt.addExample("oskar_vis_to_ms *.vis");
-    if (!opt.check_options(argc, argv))
-        return OSKAR_FAIL;
+    opt.add_flag("-p", "Force polarised MS format", false, "--force_polarised");
+    opt.add_example("oskar_vis_to_ms file1.vis file2.vis");
+    opt.add_example("oskar_vis_to_ms file1.vis file2.vis -o stitched.ms");
+    opt.add_example("oskar_vis_to_ms *.vis");
+    if (!opt.check_options(argc, argv)) return EXIT_FAILURE;
 
     // Get the options.
     string out_path;
     opt.get("-o")->getString(out_path);
-    vector<string> in_files = opt.getInputFiles(1);
-    bool verbose = opt.isSet("-q") ? false : true;
-    bool force_polarised = opt.isSet("-p") ? true : false;
+    vector<string> in_files = opt.get_input_files(1);
+    bool verbose = opt.is_set("-q") ? false : true;
+    bool force_polarised = opt.is_set("-p") ? true : false;
     int num_in_files = in_files.size();
 
     // Print if verbose.
@@ -115,7 +114,8 @@ int main(int argc, char** argv)
                 max_times_per_block;
 
         // Create a visibility block to read into.
-        oskar_VisBlock* blk = oskar_vis_block_create(OSKAR_CPU, hdr, &error);
+        oskar_VisBlock* blk = oskar_vis_block_create_from_header(OSKAR_CPU,
+                hdr, &error);
 
         // Loop over blocks and write them to the Measurement Set.
         for (int b = 0; b < num_blocks; ++b)
@@ -128,7 +128,8 @@ int main(int argc, char** argv)
         oskar_Mem* log = oskar_mem_create(OSKAR_CHAR, OSKAR_CPU, 0, &error);
         oskar_binary_read_mem(h, log, OSKAR_TAG_GROUP_RUN, OSKAR_TAG_RUN_LOG, 0,
                 &tag_error);
-        oskar_ms_add_log(ms, oskar_mem_char_const(log), oskar_mem_length(log));
+        oskar_ms_add_history(ms, "OSKAR_LOG",
+                oskar_mem_char_const(log), oskar_mem_length(log));
 
         // Clean up.
         oskar_binary_free(h);
@@ -148,7 +149,7 @@ int main(int argc, char** argv)
 int main(void)
 {
     oskar_log_error(0, "OSKAR was not compiled with Measurement Set support.");
-    return OSKAR_FAIL;
+    return EXIT_FAILURE;
 }
 #endif
 
