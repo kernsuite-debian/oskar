@@ -1,4 +1,5 @@
-propagate_buildflags.patch
-private_libdir.patch
-system_cfitsio.patch
-remove_py_from_script.patch
+#propagate_buildflags.patch
+#private_libdir.patch
+#system_cfitsio.patch
+#remove_py_from_script.patch
+fix_isystem
