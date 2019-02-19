@@ -1,0 +1,6 @@
+.debhelper/        
+files              
+oskar.debhelper.log
+oskar.substvars    
+oskar/             
+

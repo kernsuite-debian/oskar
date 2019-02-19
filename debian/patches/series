@@ -3,3 +3,4 @@
 #system_cfitsio.patch
 #remove_py_from_script.patch
 fix_isystem
+Fix-casacore30-support.patch

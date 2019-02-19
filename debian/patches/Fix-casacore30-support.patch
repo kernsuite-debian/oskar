@@ -1,0 +1,165 @@
+Description:  Fix casacore 3.0 support
+
+--- oskar-2.7.0.orig/oskar/ms/private_ms.h
++++ oskar-2.7.0/oskar/ms/private_ms.h
+@@ -26,13 +26,13 @@
+  * POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <ms/MeasurementSets.h>
++#include <casacore/ms/MeasurementSets.h>
+ 
+ struct oskar_MeasurementSet
+ {
+-    casa::MeasurementSet* ms;   // Pointer to the Measurement Set.
+-    casa::MSColumns* msc;       // Pointer to the sub-tables.
+-    casa::MSMainColumns* msmc;  // Pointer to the main columns.
++    casacore::MeasurementSet* ms;   // Pointer to the Measurement Set.
++    casacore::MSColumns* msc;       // Pointer to the sub-tables.
++    casacore::MSMainColumns* msmc;  // Pointer to the main columns.
+     char* app_name;
+     unsigned int *a1, *a2;
+     unsigned int num_pols, num_channels, num_stations, num_receptors;
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_accessors.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_accessors.cpp
+@@ -29,10 +29,10 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ size_t oskar_ms_column_element_size(const oskar_MeasurementSet* p,
+         const char* column)
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_add_history.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_add_history.cpp
+@@ -29,8 +29,8 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+ #include <string>
+ #include <sstream>
+@@ -38,7 +38,7 @@
+ #include <ctime>
+ #include <cstdlib>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ static std::vector<std::string> split_string(const std::string& s, char delim)
+ {
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_add_scratch_columns.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_add_scratch_columns.cpp
+@@ -29,10 +29,10 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ // Method based on CASA VisModelData.cc.
+ static bool is_otf_model_defined(const String& key, const MeasurementSet& ms)
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_copy_data_column.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_copy_data_column.cpp
+@@ -29,11 +29,11 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
++#include <casacore/tables/Tables.h>
+ 
+ #include <cstring>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ void oskar_ms_copy_data_column(oskar_MeasurementSet* p, const char* source,
+         const char* dest)
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_create.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_create.cpp
+@@ -29,14 +29,14 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+ #include <cstdlib>
+ #include <cstdio>
+ #include <ctime>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ static void oskar_ms_add_band(oskar_MeasurementSet* p, int pol_id,
+         unsigned int num_channels, double ref_freq,
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_open.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_open.cpp
+@@ -29,13 +29,13 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+ #include <cstdlib>
+ #include <cstdio>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ oskar_MeasurementSet* oskar_ms_open(const char* filename)
+ {
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_read.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_read.cpp
+@@ -29,11 +29,11 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
+-#include <casa/Arrays/Matrix.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
++#include <casacore/casa/Arrays/Matrix.h>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ template<typename T>
+ void copy_array(const oskar_MeasurementSet* p, const char* column,
+--- oskar-2.7.0.orig/oskar/ms/src/oskar_ms_write.cpp
++++ oskar-2.7.0/oskar/ms/src/oskar_ms_write.cpp
+@@ -29,10 +29,10 @@
+ #include "ms/oskar_measurement_set.h"
+ #include "ms/private_ms.h"
+ 
+-#include <tables/Tables.h>
+-#include <casa/Arrays/Vector.h>
++#include <casacore/tables/Tables.h>
++#include <casacore/casa/Arrays/Vector.h>
+ 
+-using namespace casa;
++using namespace casacore;
+ 
+ static void oskar_ms_create_baseline_indices(oskar_MeasurementSet* p,
+         unsigned int num_baselines)
